@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en" class="dark scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+
+    <!-- Polyfills & Environment Shims for Web3 embedded iframe runtime (MUST BE FIRST IN HEAD) -->
+    <script>
+      (function() {
+        // 1. Guard against WalletConnect prototype error:
+        // "TypeError: Cannot set property fetch of #<Window> which has only a getter"
+        try {
+          var _origFetch = typeof window !== 'undefined' && window.fetch ? window.fetch.bind(window) : undefined;
+          var _currentFetch = _origFetch;
+
+          if (typeof Window !== 'undefined' && Window.prototype) {
+            try {
+              Object.defineProperty(Window.prototype, 'fetch', {
+                configurable: true,
+                enumerable: true,
+                get: function() {
+                  return _currentFetch || (window && window.fetch);
+                },
+                set: function(val) {
+                  Object.defineProperty(this, 'fetch', {
+                    value: val,
+                    writable: true,
+                    configurable: true,
+                    enumerable: true,
+                  });
+                },
+              });
+            } catch (e) {}
+          }
+
+          if (typeof window !== 'undefined') {
+            try {
+              Object.defineProperty(window, 'fetch', {
+                configurable: true,
+                enumerable: true,
+                get: function() {
+                  return _currentFetch;
+                },
+                set: function(val) {
+                  if (this !== window) {
+                    Object.defineProperty(this, 'fetch', {
+                      value: val,
+                      writable: true,
+                      configurable: true,
+                      enumerable: true,
+                    });
+                  } else if (typeof val === 'function') {
+                    _currentFetch = val;
+                  }
+                },
+              });
+            } catch (e) {}
+          }
+        } catch (e) {
+          console.warn('[Hybit Shim] fetch accessor setup warning:', e);
+        }
+
+        // 2. Guard against @base-org/account cross-origin iframe SecurityError:
+        // "SecurityError: Failed to read a named property 'ethereum' from 'Window'"
+        // When running in an iframe with no injected provider, Base Account SDK attempts to access
+        // window.top.ethereum which throws when crossing origin boundaries.
+        // Providing a safe local fallback prevents inspecting window.top.
+        try {
+          if (typeof window !== 'undefined' && !window.ethereum) {
+            window.ethereum = {
+              isMetaMask: false,
+              isCoinbaseBrowser: false,
+              isCoinbaseWallet: false,
+              isBraveWallet: false,
+              on: function() {},
+              removeListener: function() {},
+              request: function() {
+                return Promise.reject(new Error('Injected Web3 provider is not available in preview iframe.'));
+              },
+            };
+          }
+        } catch (e) {
+          console.warn('[Hybit Shim] ethereum provider shim warning:', e);
+        }
+      })();
+    </script>
+
+    <title>Hybit – Crypto as Simple as a Single Tap</title>
+    <meta name="description" content="The everyday crypto wallet for everyone. Safely store, send, receive, swap, and manage digital assets with single-tap ease and full cryptographic self-custody." />
+    <meta name="theme-color" content="#09090B" />
+    <link rel="icon" type="image/svg+xml" href="/logo.svg" />
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Hybit Wallet" />
+    <meta property="og:title" content="Hybit – Crypto as Simple as a Single Tap" />
+    <meta property="og:description" content="The everyday crypto wallet for everyone. Safely store, send, receive, swap, and manage digital assets with single-tap ease." />
+    
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Hybit – Crypto as Simple as a Single Tap" />
+    <meta name="twitter:description" content="The everyday crypto wallet for everyone. Safely store, send, receive, swap, and manage digital assets with single-tap ease." />
+
+    <!-- Google Fonts: Geist Sans, Geist Mono, Lobster (for Hybit name) & Chinese Fallback -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700;800&family=Geist+Mono:wght@400;500;600&family=Lobster&family=Ma+Shan+Zheng&family=ZCOOL+XiaoWei&display=swap" rel="stylesheet">
+
+    <!-- Schema.org Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "Hybit Wallet",
+      "applicationCategory": "FinanceApplication",
+      "operatingSystem": "iOS, Android, Web, Chrome",
+      "description": "Hybit is an everyday crypto wallet where users can safely store, send, receive, swap, and manage digital assets with single-tap ease and full cryptographic self-custody.",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "featureList": [
+        "Effortless single-tap user interface",
+        "One-tap cross-chain swaps",
+        "Multi-Party Computation (MPC) security",
+        "Gasless and phone number transfers",
+        "Non-custodial asset custody"
+      ]
+    }
+    </script>
+  </head>
+  <body class="bg-[#09090B] text-[#FAFAFA] font-sans antialiased selection:bg-[#0095FF]/30 selection:text-white min-h-screen overflow-x-hidden">
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

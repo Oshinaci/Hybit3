@@ -1,0 +1,131 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: 'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'Geist Mono', monospace;
+  --font-chinese: 'Lobster', cursive;
+  --font-lobster: 'Lobster', cursive;
+  --color-primary: #0095FF;
+  --color-secondary: #0058FF;
+  --color-accent: #0095FF;
+  --color-background: #09090B;
+  --color-surface: #18181B;
+  --color-surface-muted: #121215;
+  --color-surface-hover: #222226;
+  --color-border-subtle: rgba(255, 255, 255, 0.08);
+  --color-success: #16C784;
+  --color-danger: #EA3943;
+}
+
+.font-chinese,
+.font-lobster,
+.font-brand {
+  font-family: 'Lobster', cursive, sans-serif !important;
+}
+
+@layer base {
+  * {
+    border-color: rgba(255, 255, 255, 0.08);
+  }
+  html {
+    color-scheme: dark;
+    scroll-behavior: smooth;
+    scrollbar-gutter: stable;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.18) transparent;
+  }
+  body {
+    background-color: #09090B;
+    color: #FAFAFA;
+    font-family: 'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    overflow-x: hidden;
+  }
+}
+
+/* Modern, ultra-sleek, non-intrusive floating scrollbar */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.14);
+  border-radius: 9999px;
+  border: 1px solid transparent;
+  background-clip: padding-box;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 149, 255, 0.65);
+}
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+/* Skeleton & Hybit Text Fill Animations */
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* Running Water Flow Animation for Hybit Text */
+@keyframes waterCurrent {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes waterWaveFlow {
+  0% {
+    background-position: 250% 0;
+  }
+  100% {
+    background-position: -250% 0;
+  }
+}
+
+.animate-water-flow {
+  background-size: 280% 100%;
+  animation: waterWaveFlow 2.8s linear infinite;
+}
+
+.animate-water-fast {
+  background-size: 280% 100%;
+  animation: waterWaveFlow 1.6s linear infinite;
+}
+
+@keyframes hybitTextFillSweep {
+  0% {
+    clip-path: inset(-20% 105% -35% -10%);
+    -webkit-clip-path: inset(-20% 105% -35% -10%);
+  }
+  48% {
+    clip-path: inset(-20% -10% -35% -10%);
+    -webkit-clip-path: inset(-20% -10% -35% -10%);
+  }
+  75% {
+    clip-path: inset(-20% -10% -35% -10%);
+    -webkit-clip-path: inset(-20% -10% -35% -10%);
+  }
+  100% {
+    clip-path: inset(-20% -10% -35% 105%);
+    -webkit-clip-path: inset(-20% -10% -35% 105%);
+  }
+}
+
+.animate-hybit-text-fill {
+  animation: hybitTextFillSweep 1.6s ease-in-out infinite;
+}
+

@@ -1,0 +1,6 @@
+{
+  "name": "Hybit - Crypto as Easy as GoPay",
+  "description": "Hybit is an everyday crypto wallet where users safely store, send, receive, swap, bridge, buy, and manage digital assets with GoPay-level simplicity.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
